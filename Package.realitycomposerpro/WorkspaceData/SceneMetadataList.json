@@ -1,0 +1,35 @@
+{
+  "2FB2CF54-28FF-4BB6-9115-9FD563A93168" : {
+    "objectMetadataList" : [
+      [
+        "2FB2CF54-28FF-4BB6-9115-9FD563A93168",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "BFD20C2A-535F-4311-ACC7-38485C83B54D" : {
+    "objectMetadataList" : [
+      [
+        "BFD20C2A-535F-4311-ACC7-38485C83B54D",
+        "Root",
+        "magnetic_fluid_material"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "BFD20C2A-535F-4311-ACC7-38485C83B54D",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  }
+}

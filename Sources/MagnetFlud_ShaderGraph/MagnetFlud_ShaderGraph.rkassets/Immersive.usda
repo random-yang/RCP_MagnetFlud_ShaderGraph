@@ -1,0 +1,217 @@
+#usda 1.0
+(
+    customLayerData = {
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["magnetic_fluid_material", "center_gradient_Material", "Material", "Sphere", "Sphere_1", "egg_shell"]
+    def Sphere "Sphere" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        reorder nameChildren = ["DefaultMaterial", "glass_Material"]
+        rel material:binding = </Root/magnetic_fluid_material> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double radius = 1
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Material "magnetic_fluid_material"
+    {
+        token outputs:mtlx:surface.connect = </Root/magnetic_fluid_material/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/magnetic_fluid_material/GeometryModifier.outputs:out>
+        token outputs:surface.connect = </Root/magnetic_fluid_material/UsdPreviewSurface.outputs:surface>
+        string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:mtlx:surface", "outputs:mtlx:surface", "outputs:realitykit:vertex"]
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (451.51868, 356.93762)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 1105
+
+        def Shader "UsdPreviewSurface" (
+            active = false
+        )
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            token outputs:surface
+        }
+
+        def Shader "GeometryModifier"
+        {
+            uniform token info:id = "ND_realitykit_geometrymodifier_2_0_vertexshader"
+            float3 inputs:bitangent.connect = None
+            color4f inputs:color.connect = None
+            float3 inputs:modelPositionOffset = (0, 0, 0)
+            float3 inputs:modelPositionOffset.connect = </Root/magnetic_fluid_material/Multiply_1.outputs:out>
+            float3 inputs:normal.connect = None
+            float2 inputs:uv0.connect = None
+            float2 inputs:uv1
+            float4 inputs:uv2
+            float4 inputs:uv3.connect = None
+            float4 inputs:uv4
+            float4 inputs:uv5
+            float4 inputs:uv6
+            float4 inputs:uv7.connect = None
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (-33.78576, 535.3096)
+            int ui:nodegraph:node:stackingOrder = 1203
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:modelPositionOffset"]
+        }
+
+        def Shader "Sin"
+        {
+            uniform token info:id = "ND_sin_float"
+            float inputs:in.connect = </Root/magnetic_fluid_material/Add.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-501.8789, 473.34375)
+            int ui:nodegraph:node:stackingOrder = 1299
+        }
+
+        def Shader "Combine3"
+        {
+            uniform token info:id = "ND_combine3_vector3"
+            float inputs:in1.connect = </Root/magnetic_fluid_material/Sin.outputs:out>
+            float inputs:in2.connect = </Root/magnetic_fluid_material/Sin.outputs:out>
+            float inputs:in3.connect = </Root/magnetic_fluid_material/Sin.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-328.3086, 475.76953)
+            int ui:nodegraph:node:stackingOrder = 1164
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/magnetic_fluid_material/Separate3.outputs:outx>
+            float inputs:in2 = 15
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-649.80176, 357.11755)
+            int ui:nodegraph:node:stackingOrder = 1244
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in2", "outputs:out"]
+        }
+
+        def Shader "Multiply_1"
+        {
+            uniform token info:id = "ND_multiply_vector3"
+            float3 inputs:in1.connect = </Root/magnetic_fluid_material/Combine3.outputs:out>
+            float3 inputs:in2 = (0, 0.1, 0.1)
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-232.5, 564.41016)
+            int ui:nodegraph:node:stackingOrder = 1363
+        }
+
+        def Shader "Time"
+        {
+            uniform token info:id = "ND_time_float"
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-901.09924, 406.74573)
+            int ui:nodegraph:node:stackingOrder = 1358
+        }
+
+        def Shader "Add"
+        {
+            uniform token info:id = "ND_add_float"
+            float inputs:in1.connect = </Root/magnetic_fluid_material/Multiply.outputs:out>
+            float inputs:in2.connect = </Root/magnetic_fluid_material/Multiply_2.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-643.96094, 508.92188)
+            int ui:nodegraph:node:stackingOrder = 1247
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in1"]
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-836.0431, 240.87624)
+            int ui:nodegraph:node:stackingOrder = 1238
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "Separate3"
+        {
+            uniform token info:id = "ND_separate3_vector3"
+            float3 inputs:in.connect = </Root/magnetic_fluid_material/Position.outputs:out>
+            float outputs:outx
+            float outputs:outy
+            float outputs:outz
+            float2 ui:nodegraph:node:pos = (-618.92224, 239.4862)
+            int ui:nodegraph:node:stackingOrder = 1170
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:outx"]
+        }
+
+        def Shader "IfGreater"
+        {
+            uniform token info:id = "ND_ifgreater_float"
+            float inputs:in1 = 1
+            float inputs:in2 = 1
+            float inputs:value1.connect = </Root/magnetic_fluid_material/Separate3.outputs:outz>
+            float inputs:value2 = 0
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-359.2752, 221.35135)
+            int ui:nodegraph:node:stackingOrder = 1200
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in1"]
+        }
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            color3f inputs:diffuseColor = (0.12841283, 0.12698953, 0.13233902) (
+                colorSpace = "srgb_displayp3"
+            )
+            float inputs:metallic = 0.8
+            float3 inputs:normal
+            float inputs:opacity.connect = </Root/magnetic_fluid_material/IfGreater.outputs:out>
+            float inputs:roughness = 0.1
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (-37.43827, 214.91626)
+            int ui:nodegraph:node:stackingOrder = 1365
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:opacity"]
+        }
+
+        def Scope "Group" (
+            kind = "group"
+        )
+        {
+            string ui:group:annotation = "cycle"
+            string ui:group:annotationDescription = ""
+            string[] ui:group:members = ["p:Multiply"]
+        }
+
+        def Scope "Group2" (
+            kind = "group"
+        )
+        {
+            string ui:group:annotation = "振幅"
+            string ui:group:annotationDescription = ""
+            string[] ui:group:members = ["p:Multiply_1"]
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/magnetic_fluid_material/Time.outputs:out>
+            float inputs:in2 = 3.25
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-750.8633, 508.86328)
+            int ui:nodegraph:node:stackingOrder = 1259
+        }
+
+        def Shader "Noise3D"
+        {
+            uniform token info:id = "ND_noise3d_vector3"
+            float3 inputs:amplitude = (1, 1, 1)
+            float inputs:pivot = 0
+            float3 inputs:position.connect = </Root/magnetic_fluid_material/Combine3.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-316.9484, 696.4693)
+            int ui:nodegraph:node:stackingOrder = 1331
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+    }
+}
+
